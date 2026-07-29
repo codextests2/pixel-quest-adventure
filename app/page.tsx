@@ -32,6 +32,8 @@ export default function Home() {
     background.src = "/game-background.png";
     const hero = new Image();
     hero.src = "/hero.png";
+    const foods = new Image();
+    foods.src = "/foods.png";
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
@@ -141,9 +143,11 @@ export default function Home() {
       platforms.forEach((p) => drawBlock(p.x, p.y, p.w, p.h));
       coinPositions.forEach(([x, y], i) => {
         if (collected.has(i)) return;
-        ctx.fillStyle = "#ffdc45"; ctx.fillRect(x - 8, y - 13, 16, 26);
-        ctx.fillStyle = "#fff09a"; ctx.fillRect(x - 3, y - 9, 5, 16);
-        ctx.strokeStyle = "#c9832d"; ctx.lineWidth = 3; ctx.strokeRect(x - 8, y - 13, 16, 26);
+        if (!foods.complete || foods.width === 0) return;
+        const sourceW = foods.width / 2;
+        const sourceX = i % 2 === 0 ? 0 : sourceW;
+        const bob = Math.sin(performance.now() / 240 + i) * 3;
+        ctx.drawImage(foods, sourceX, 0, sourceW, foods.height, x - 24, y - 24 + bob, 48, 48);
       });
       if (!mushroomTaken) {
         ctx.strokeStyle = "#7a3e23"; ctx.lineWidth = 5;
@@ -202,14 +206,14 @@ export default function Home() {
       <section className="gameShell">
         <div className="hud">
           <div><span className="hudLabel">关卡</span><strong>1 — 皇城郊野</strong></div>
-          <div className="hudStats"><span>🟡 × {String(coins).padStart(2,"0")}</span><span>{big ? "🍡 大力状态" : "♡ 轻功状态"}</span></div>
+          <div className="hudStats"><span>🍜 美食 × {String(coins).padStart(2,"0")}</span><span>{big ? "🍡 大力状态" : "♡ 轻功状态"}</span></div>
         </div>
         <div className="canvasWrap">
           <canvas ref={canvasRef} width="960" height="540" aria-label="横版平台游戏画面" />
           {status !== "playing" && (
             <div className="gameOverlay">
               {status === "ready" && <><span className="overlayMini">侠客的旅程正在等待</span><h2>抵达右边的皇宫</h2><p>← → 移动　·　空格跳跃　·　R 重来</p></>}
-              {status === "won" && <><span className="trophy">♛</span><h2>皇宫到了！</h2><p>你收集了 {coins} 枚金币，完成了皇城郊野。</p></>}
+              {status === "won" && <><span className="trophy">♛</span><h2>皇宫到了！</h2><p>你收集了 {coins} 份拉面与水饺，完成了皇城郊野。</p></>}
               {status === "lost" && <><span className="trophy">☁</span><h2>差一点！</h2><p>冒险家不会被一个小坑打败。</p></>}
               <button onClick={() => restartRef.current()}>{status === "ready" ? "开始冒险 →" : "再玩一次 ↻"}</button>
             </div>
@@ -223,7 +227,7 @@ export default function Home() {
       </section>
 
       <section className="tips">
-        <article><span>01</span><div><h3>固定少年侠客</h3><p>身穿玄色金纹劲装，轻功跳跃，踏上唯一的皇城之路。</p></div></article>
+        <article><span>01</span><div><h3>沿途收集美食</h3><p>热腾腾的拉面与蒸笼水饺散落在皇城郊野，看看你能找到多少。</p></div></article>
         <article><span>02</span><div><h3>糖葫芦大力状态</h3><p>碰到闪亮糖葫芦，体型和抗打能力都会提升。</p></div></article>
         <article><span>03</span><div><h3>目标：金瓦皇宫</h3><p>一路向右，安全穿过皇城郊野就是胜利。</p></div></article>
       </section>
