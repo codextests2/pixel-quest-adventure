@@ -30,6 +30,8 @@ export default function Home() {
     let startTime = performance.now();
     const background = new Image();
     background.src = "/game-background.png";
+    const hero = new Image();
+    hero.src = "/hero.png";
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
@@ -73,15 +75,17 @@ export default function Home() {
     const drawPlayer = () => {
       const x = Math.round(player.x - camera), y = Math.round(player.y);
       ctx.save();
-      ctx.fillStyle = "#171d2d"; ctx.fillRect(x + 9, y - 8, player.w - 18, 10);
-      ctx.fillRect(x + 5, y - 3, player.w - 10, 9);
-      ctx.fillStyle = "#f2b279"; ctx.fillRect(x + 6, y + 7, player.w - 12, 15);
-      ctx.fillStyle = "#171d2d"; ctx.fillRect(x + 3, y + 5, 7, 18); ctx.fillRect(x + player.w - 10, y + 5, 7, 18);
-      ctx.fillRect(x + 11, y + 10, 4, 5); ctx.fillRect(x + player.w - 15, y + 10, 4, 5);
-      ctx.fillStyle = "#1d2837"; ctx.fillRect(x + 2, y + 23, player.w - 4, player.h - 23);
-      ctx.fillStyle = "#d8a843"; ctx.fillRect(x + 5, y + 27, 4, player.h - 30); ctx.fillRect(x + player.w - 9, y + 27, 4, player.h - 30);
-      ctx.fillRect(x + 6, y + 31, player.w - 12, 4);
-      ctx.fillStyle = "#6d3529"; ctx.fillRect(x, y + player.h - 7, 13, 7); ctx.fillRect(x + player.w - 13, y + player.h - 7, 13, 7);
+      const visualW = player.big ? 112 : 76;
+      const visualH = player.big ? 112 : 76;
+      const drawX = x - (visualW - player.w) / 2;
+      const drawY = y + player.h - visualH;
+      if (player.vx < -0.15) {
+        ctx.translate(drawX + visualW, drawY);
+        ctx.scale(-1, 1);
+        ctx.drawImage(hero, 0, 0, visualW, visualH);
+      } else {
+        ctx.drawImage(hero, drawX, drawY, visualW, visualH);
+      }
       ctx.restore();
     };
 
