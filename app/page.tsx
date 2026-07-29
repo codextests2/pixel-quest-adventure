@@ -34,6 +34,8 @@ export default function Home() {
     hero.src = "/hero.png";
     const foods = new Image();
     foods.src = "/foods.png";
+    const guard = new Image();
+    guard.src = "/guard.png";
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
@@ -71,8 +73,11 @@ export default function Home() {
       ctx.fillStyle = "#a95b37"; ctx.fillRect(x, y, w, 12);
       ctx.fillStyle = "#55b953"; ctx.fillRect(x, y - 9, w, 11);
       ctx.fillStyle = "#91df64"; ctx.fillRect(x, y - 9, w, 5);
-      ctx.strokeStyle = "#4a2730"; ctx.lineWidth = 3;
-      for (let bx = x; bx < x + w; bx += 42) ctx.strokeRect(bx, y + 12, 42, 28);
+      ctx.fillStyle = "#8b4a31";
+      for (let bx = x + 18; bx < x + w; bx += 64) {
+        ctx.fillRect(bx, y + 24, 18, 5);
+        ctx.fillRect(bx + 27, y + 55, 11, 5);
+      }
     };
     const drawPlayer = () => {
       const x = Math.round(player.x - camera), y = Math.round(player.y);
@@ -159,10 +164,17 @@ export default function Home() {
       }
       enemies.forEach((e) => {
         if (!e.alive) return;
-        ctx.fillStyle = "#824a8e"; ctx.fillRect(e.x, e.y + 12, 38, 24);
-        ctx.fillStyle = "#a866b4"; ctx.fillRect(e.x + 6, e.y + 5, 26, 22);
-        ctx.fillStyle = "#fff2c5"; ctx.fillRect(e.x + 9, e.y + 12, 6, 7); ctx.fillRect(e.x + 25, e.y + 12, 6, 7);
-        ctx.fillStyle = "#2b2448"; ctx.fillRect(e.x + 11, e.y + 14, 3, 4); ctx.fillRect(e.x + 27, e.y + 14, 3, 4);
+        if (!guard.complete || guard.width === 0) return;
+        const gw = 62, gh = 72, gx = e.x - 12, gy = e.y + 36 - gh;
+        ctx.save();
+        if (e.dir > 0) {
+          ctx.translate(gx + gw, gy);
+          ctx.scale(-1, 1);
+          ctx.drawImage(guard, 0, 0, gw, gh);
+        } else {
+          ctx.drawImage(guard, gx, gy, gw, gh);
+        }
+        ctx.restore();
       });
       ctx.restore();
       drawPlayer();
