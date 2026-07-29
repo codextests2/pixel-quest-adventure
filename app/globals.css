@@ -11,11 +11,7 @@ button,label { -webkit-tap-highlight-color:transparent; }
 .brand { display:flex; align-items:center; gap:12px; font:900 18px/1 monospace; letter-spacing:1px; }
 .brandDot { display:grid; place-items:center; width:38px; height:38px; background:var(--red); color:white; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink); }
 .fixedHero { background:var(--yellow); border:3px solid var(--ink); padding:10px 16px; font:800 13px monospace; box-shadow:4px 4px 0 var(--ink); }
-.hero { max-width:1200px; margin:0 auto; padding:48px 24px 30px; text-align:center; }
-.eyebrow { display:inline-block; padding:7px 12px; background:var(--teal); border:2px solid var(--ink); font:800 12px monospace; letter-spacing:1px; text-transform:uppercase; }
-h1 { margin:17px 0 8px; font-size:clamp(38px,6vw,72px); line-height:1; letter-spacing:-3px; }
-.hero p { max-width:630px; margin:0 auto; font-size:17px; line-height:1.75; }
-.gameShell { width:min(1120px,calc(100% - 32px)); margin:0 auto; background:#fff8df; border:4px solid var(--ink); box-shadow:10px 10px 0 var(--ink); }
+.gameShell { width:min(1560px,calc(100% - 24px)); margin:20px auto 42px; background:#fff8df; border:4px solid var(--ink); box-shadow:10px 10px 0 var(--ink); }
 .hud { height:64px; display:flex; justify-content:space-between; align-items:center; gap:20px; padding:0 22px; border-bottom:4px solid var(--ink); font-family:monospace; }
 .hudLabel { display:block; font-size:10px; opacity:.65; text-transform:uppercase; letter-spacing:1px; }
 .hud strong { font-size:15px; }
@@ -31,18 +27,12 @@ canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
 .mobileControls { display:none; padding:12px; gap:10px; border-top:4px solid var(--ink); }
 .mobileControls button { flex:1; min-height:54px; color:var(--ink); background:#fff0b7; border:3px solid var(--ink); font-size:24px; font-weight:900; box-shadow:3px 3px 0 var(--ink); touch-action:none; }
 .mobileControls .jumpButton { background:var(--red); color:white; flex:1.4; }
-.tips { width:min(1120px,calc(100% - 32px)); margin:46px auto 60px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.tips article { display:flex; gap:15px; background:#fff8df; border:3px solid var(--ink); padding:20px; }
-.tips article>span { color:var(--red); font:900 22px monospace; }
-.tips h3 { margin:0 0 7px; font-size:17px; }
-.tips p { margin:0; font-size:13px; line-height:1.55; opacity:.75; }
 footer { display:flex; justify-content:space-between; padding:24px max(24px,calc((100vw - 1200px)/2)); background:var(--ink); color:#fff8df; font:bold 12px monospace; letter-spacing:1px; }
 @media(max-width:720px) {
   .topbar { height:68px; padding:0 16px; }
   .brand { font-size:14px; }.brandDot { width:32px;height:32px;}.fixedHero { padding:8px 10px; font-size:10px; box-shadow:3px 3px 0 var(--ink); }
-  .hero { padding:36px 18px 22px; }.hero p { font-size:14px; } h1 { letter-spacing:-2px; }
-  .gameShell { width:calc(100% - 20px); box-shadow:6px 6px 0 var(--ink); }
+  .gameShell { width:calc(100% - 12px); margin-top:10px; box-shadow:4px 4px 0 var(--ink); }
   .hud { height:auto; min-height:62px; padding:9px 12px; }.hudStats { gap:8px; flex-direction:column; font-size:11px; text-align:right; }
-  .mobileControls { display:flex; }.tips { grid-template-columns:1fr; margin-top:30px; }
+  .mobileControls { display:flex; }
   footer { gap:10px; flex-direction:column; }
 }

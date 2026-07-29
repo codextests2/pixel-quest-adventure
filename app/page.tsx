@@ -197,12 +197,6 @@ export default function Home() {
         <div className="fixedHero">固定角色 · 少年侠客</div>
       </header>
 
-      <section className="hero">
-        <div className="eyebrow">一关 · 一串糖葫芦 · 一座皇宫</div>
-        <h1>出发吧，少年侠客！</h1>
-        <p>越过山谷，踩扁捣蛋怪，吃下糖葫芦获得大力状态，一路闯到金瓦皇宫。</p>
-      </section>
-
       <section className="gameShell">
         <div className="hud">
           <div><span className="hudLabel">关卡</span><strong>1 — 皇城郊野</strong></div>
@@ -226,11 +220,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="tips">
-        <article><span>01</span><div><h3>沿途收集美食</h3><p>热腾腾的拉面与蒸笼水饺散落在皇城郊野，看看你能找到多少。</p></div></article>
-        <article><span>02</span><div><h3>糖葫芦大力状态</h3><p>碰到闪亮糖葫芦，体型和抗打能力都会提升。</p></div></article>
-        <article><span>03</span><div><h3>目标：金瓦皇宫</h3><p>一路向右，安全穿过皇城郊野就是胜利。</p></div></article>
-      </section>
       <footer><span>小暴君游戏</span><span>原创像素冒险 · 为你而造</span></footer>
     </main>
   );
