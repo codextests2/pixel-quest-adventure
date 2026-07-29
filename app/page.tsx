@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 type Status = "ready" | "playing" | "won" | "lost";
+const assetBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,13 +30,13 @@ export default function Home() {
     let mushroomTaken = false;
     let startTime = performance.now();
     const background = new Image();
-    background.src = "/game-background.png";
+    background.src = `${assetBase}/game-background.png`;
     const hero = new Image();
-    hero.src = "/hero.png";
+    hero.src = `${assetBase}/hero.png`;
     const foods = new Image();
-    foods.src = "/foods.png";
+    foods.src = `${assetBase}/foods.png`;
     const guard = new Image();
-    guard.src = "/guard.png";
+    guard.src = `${assetBase}/guard.png`;
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
