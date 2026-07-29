@@ -29,10 +29,30 @@ canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
 .mobileControls .jumpButton { background:var(--red); color:white; flex:1.4; }
 footer { display:flex; justify-content:space-between; padding:24px max(24px,calc((100vw - 1200px)/2)); background:var(--ink); color:#fff8df; font:bold 12px monospace; letter-spacing:1px; }
 @media(max-width:720px) {
-  .topbar { height:68px; padding:0 16px; }
-  .brand { font-size:14px; }.brandDot { width:32px;height:32px;}.fixedHero { padding:8px 10px; font-size:10px; box-shadow:3px 3px 0 var(--ink); }
-  .gameShell { width:calc(100% - 12px); margin-top:10px; box-shadow:4px 4px 0 var(--ink); }
-  .hud { height:auto; min-height:62px; padding:9px 12px; }.hudStats { gap:8px; flex-direction:column; font-size:11px; text-align:right; }
-  .mobileControls { display:flex; }
-  footer { gap:10px; flex-direction:column; }
+  html,body { min-height:100%; overflow-x:hidden; }
+  .topbar { height:52px; padding:0 10px; border-bottom-width:2px; }
+  .brand { gap:8px; font-size:13px; }
+  .brandDot { width:28px; height:28px; border-width:2px; box-shadow:2px 2px 0 var(--ink); }
+  .fixedHero { display:none; }
+  .gameShell { width:calc(100% - 8px); margin:6px auto 0; border-width:2px; box-shadow:none; }
+  .hud { height:46px; min-height:46px; gap:8px; padding:5px 9px; border-bottom-width:2px; }
+  .hudLabel { font-size:8px; }
+  .hud strong { font-size:11px; }
+  .hudStats { gap:3px; flex-direction:column; font-size:9px; line-height:1.15; text-align:right; }
+  .canvasWrap canvas { width:100%; max-height:48svh; object-fit:contain; }
+  .gameOverlay { padding:10px; }
+  .gameOverlay h2 { margin:4px 0; font-size:24px; letter-spacing:-1px; }
+  .gameOverlay p { margin:2px 0 12px; font-size:10px; }
+  .overlayMini { font-size:9px; letter-spacing:1px; }
+  .gameOverlay button { padding:9px 15px; border-width:2px; box-shadow:3px 3px 0 #fff8df; font-size:13px; }
+  .mobileControls { display:flex; padding:7px; gap:7px; border-top-width:2px; }
+  .mobileControls button { min-height:44px; border-width:2px; box-shadow:2px 2px 0 var(--ink); font-size:20px; }
+  footer { display:none; }
+}
+@media(max-width:720px) and (orientation:landscape) {
+  .topbar { display:none; }
+  .gameShell { margin-top:2px; }
+  .hud { height:38px; min-height:38px; }
+  .canvasWrap canvas { max-height:66svh; }
+  .mobileControls button { min-height:36px; }
 }
