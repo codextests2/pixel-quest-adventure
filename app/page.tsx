@@ -193,7 +193,7 @@ export default function Home() {
   return (
     <main>
       <header className="topbar">
-        <div className="brand"><span className="brandDot">P</span><span>PIXEL QUEST</span></div>
+        <div className="brand"><span className="brandDot">暴</span><span>小暴君游戏</span></div>
         <div className="fixedHero">固定角色 · 少年侠客</div>
       </header>
 
@@ -231,7 +231,7 @@ export default function Home() {
         <article><span>02</span><div><h3>糖葫芦大力状态</h3><p>碰到闪亮糖葫芦，体型和抗打能力都会提升。</p></div></article>
         <article><span>03</span><div><h3>目标：金瓦皇宫</h3><p>一路向右，安全穿过皇城郊野就是胜利。</p></div></article>
       </section>
-      <footer><span>PIXEL QUEST</span><span>原创像素冒险 · 为你而造</span></footer>
+      <footer><span>小暴君游戏</span><span>原创像素冒险 · 为你而造</span></footer>
     </main>
   );
 }
