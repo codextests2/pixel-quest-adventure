@@ -1,30 +1,16 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Status = "ready" | "playing" | "won" | "lost";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const portraitRef = useRef<HTMLImageElement | null>(null);
   const controls = useRef({ left: false, right: false, jump: false });
   const [status, setStatus] = useState<Status>("ready");
   const [coins, setCoins] = useState(0);
   const [big, setBig] = useState(false);
-  const [portrait, setPortrait] = useState<string | null>(null);
   const restartRef = useRef<() => void>(() => {});
-
-  const uploadPortrait = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      portraitRef.current = image;
-      setPortrait(url);
-    };
-    image.src = url;
-  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,36 +73,36 @@ export default function Home() {
       ctx.strokeStyle = "#4a2730"; ctx.lineWidth = 3;
       for (let bx = x; bx < x + w; bx += 42) ctx.strokeRect(bx, y + 12, 42, 28);
     };
-    const drawCastle = (x: number) => {
-      ctx.fillStyle = "#ffce54"; ctx.fillRect(x + 48, 225, 220, 230);
-      ctx.fillStyle = "#f4a93e";
-      ctx.fillRect(x + 12, 300, 72, 155); ctx.fillRect(x + 235, 300, 72, 155);
-      ctx.fillStyle = "#ef5a47";
-      ctx.beginPath(); ctx.moveTo(x + 5, 300); ctx.lineTo(x + 48, 235); ctx.lineTo(x + 91, 300); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(x + 227, 300); ctx.lineTo(x + 271, 235); ctx.lineTo(x + 315, 300); ctx.fill();
-      ctx.fillStyle = "#2b2448"; ctx.fillRect(x + 130, 370, 55, 85);
-      ctx.fillRect(x + 37, 345, 18, 28); ctx.fillRect(x + 263, 345, 18, 28);
-      ctx.fillStyle = "#fff2b8";
-      for (let i = 0; i < 6; i++) ctx.fillRect(x + 48 + i*37, 214, 20, 25);
-      ctx.fillStyle = "#ef5a47"; ctx.fillRect(x + 157, 170, 7, 54);
-      ctx.fillRect(x + 164, 170, 50, 25);
+    const drawPalace = (x: number) => {
+      ctx.fillStyle = "#b7332b"; ctx.fillRect(x + 35, 290, 270, 165);
+      ctx.fillStyle = "#f1c45e"; ctx.fillRect(x + 55, 315, 230, 16);
+      ctx.fillStyle = "#1f6072"; ctx.fillRect(x + 65, 335, 210, 16);
+      ctx.fillStyle = "#ef9f2f";
+      ctx.beginPath(); ctx.moveTo(x, 290); ctx.lineTo(x + 45, 250); ctx.lineTo(x + 295, 250); ctx.lineTo(x + 340, 290); ctx.fill();
+      ctx.fillStyle = "#ffd65c"; ctx.fillRect(x + 28, 280, 284, 13);
+      ctx.fillStyle = "#ef9f2f";
+      ctx.beginPath(); ctx.moveTo(x + 38, 250); ctx.lineTo(x + 78, 205); ctx.lineTo(x + 262, 205); ctx.lineTo(x + 302, 250); ctx.fill();
+      ctx.fillStyle = "#ffd65c"; ctx.fillRect(x + 67, 240, 206, 12);
+      ctx.fillStyle = "#6f201f"; ctx.fillRect(x + 135, 365, 70, 90);
+      ctx.fillStyle = "#e9be75";
+      for (let i = 0; i < 6; i++) ctx.fillRect(x + 55 + i*47, 315, 12, 140);
+      ctx.fillStyle = "#203e54"; ctx.fillRect(x + 120, 262, 100, 34);
+      ctx.fillStyle = "#ffd65c"; ctx.font = "900 22px serif"; ctx.textAlign = "center"; ctx.fillText("皇 宫", x + 170, 287);
+      ctx.fillStyle = "#ef9f2f";
+      ctx.fillRect(x + 15, 275, 28, 10); ctx.fillRect(x + 297, 275, 28, 10);
     };
     const drawPlayer = () => {
       const x = Math.round(player.x - camera), y = Math.round(player.y);
       ctx.save();
-      if (portraitRef.current) {
-        ctx.imageSmoothingEnabled = false;
-        ctx.fillStyle = "#ef5a47"; ctx.fillRect(x - 4, y - 6, player.w + 8, 15);
-        ctx.save(); ctx.beginPath(); ctx.arc(x + player.w/2, y + player.w/2, player.w/2 - 2, 0, Math.PI*2); ctx.clip();
-        ctx.drawImage(portraitRef.current, x + 2, y + 2, player.w - 4, player.w - 4); ctx.restore();
-        ctx.fillStyle = "#205b8c"; ctx.fillRect(x + 4, y + player.w - 1, player.w - 8, player.h - player.w + 1);
-      } else {
-        ctx.fillStyle = "#ef5a47"; ctx.fillRect(x + 2, y, player.w - 4, 12); ctx.fillRect(x - 2, y + 8, player.w + 4, 7);
-        ctx.fillStyle = "#f4b879"; ctx.fillRect(x + 7, y + 15, player.w - 11, 14);
-        ctx.fillStyle = "#2b2448"; ctx.fillRect(x + player.w - 10, y + 17, 4, 5);
-        ctx.fillStyle = "#205b8c"; ctx.fillRect(x + 5, y + 29, player.w - 10, player.h - 29);
-      }
-      ctx.fillStyle = "#402a2d"; ctx.fillRect(x, y + player.h - 7, 13, 7); ctx.fillRect(x + player.w - 13, y + player.h - 7, 13, 7);
+      ctx.fillStyle = "#171d2d"; ctx.fillRect(x + 9, y - 8, player.w - 18, 10);
+      ctx.fillRect(x + 5, y - 3, player.w - 10, 9);
+      ctx.fillStyle = "#f2b279"; ctx.fillRect(x + 6, y + 7, player.w - 12, 15);
+      ctx.fillStyle = "#171d2d"; ctx.fillRect(x + 3, y + 5, 7, 18); ctx.fillRect(x + player.w - 10, y + 5, 7, 18);
+      ctx.fillRect(x + 11, y + 10, 4, 5); ctx.fillRect(x + player.w - 15, y + 10, 4, 5);
+      ctx.fillStyle = "#1d2837"; ctx.fillRect(x + 2, y + 23, player.w - 4, player.h - 23);
+      ctx.fillStyle = "#d8a843"; ctx.fillRect(x + 5, y + 27, 4, player.h - 30); ctx.fillRect(x + player.w - 9, y + 27, 4, player.h - 30);
+      ctx.fillRect(x + 6, y + 31, player.w - 12, 4);
+      ctx.fillStyle = "#6d3529"; ctx.fillRect(x, y + player.h - 7, 13, 7); ctx.fillRect(x + player.w - 13, y + player.h - 7, 13, 7);
       ctx.restore();
     };
 
@@ -179,10 +165,12 @@ export default function Home() {
         ctx.strokeStyle = "#c9832d"; ctx.lineWidth = 3; ctx.strokeRect(x - 8, y - 13, 16, 26);
       });
       if (!mushroomTaken) {
-        ctx.fillStyle = "#fff2c5"; ctx.fillRect(1289, 397, 20, 22);
-        ctx.fillStyle = "#ef5a47"; ctx.fillRect(1280, 377, 38, 23);
-        ctx.fillStyle = "#fff2c5"; ctx.fillRect(1287, 382, 7, 7); ctx.fillRect(1306, 382, 7, 7);
-        ctx.strokeStyle = "#48243a"; ctx.lineWidth = 3; ctx.strokeRect(1280, 377, 38, 23);
+        ctx.strokeStyle = "#7a3e23"; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.moveTo(1299, 372); ctx.lineTo(1299, 423); ctx.stroke();
+        for (let i = 0; i < 4; i++) {
+          ctx.fillStyle = "#df3429"; ctx.beginPath(); ctx.arc(1299, 382 + i * 10, 9, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#ff7d42"; ctx.fillRect(1295, 377 + i * 10, 4, 4);
+        }
       }
       enemies.forEach((e) => {
         if (!e.alive) return;
@@ -191,7 +179,7 @@ export default function Home() {
         ctx.fillStyle = "#fff2c5"; ctx.fillRect(e.x + 9, e.y + 12, 6, 7); ctx.fillRect(e.x + 25, e.y + 12, 6, 7);
         ctx.fillStyle = "#2b2448"; ctx.fillRect(e.x + 11, e.y + 14, 3, 4); ctx.fillRect(e.x + 27, e.y + 14, 3, 4);
       });
-      drawCastle(3045);
+      drawPalace(3045);
       ctx.restore();
       drawPlayer();
       if (gameStatus === "ready") {
@@ -222,30 +210,26 @@ export default function Home() {
     <main>
       <header className="topbar">
         <div className="brand"><span className="brandDot">P</span><span>PIXEL QUEST</span></div>
-        <label className="uploadButton" htmlFor="portraitUpload">
-          <span className="uploadIcon">{portrait ? "✓" : "↑"}</span>
-          {portrait ? "图案已装备" : "上传个人图案"}
-        </label>
-        <input id="portraitUpload" type="file" accept="image/*" onChange={uploadPortrait} hidden />
+        <div className="fixedHero">固定角色 · 少年侠客</div>
       </header>
 
       <section className="hero">
-        <div className="eyebrow">一关 · 一个蘑菇 · 一座城堡</div>
-        <h1>去吧，小小冒险家！</h1>
-        <p>越过裂缝，踩扁捣蛋怪，吃下蘑菇变得更强大。你的头像，就是今天的主角。</p>
+        <div className="eyebrow">一关 · 一串糖葫芦 · 一座皇宫</div>
+        <h1>出发吧，少年侠客！</h1>
+        <p>越过山谷，踩扁捣蛋怪，吃下糖葫芦获得大力状态，一路闯到金瓦皇宫。</p>
       </section>
 
       <section className="gameShell">
         <div className="hud">
-          <div><span className="hudLabel">关卡</span><strong>1 — 青绿原野</strong></div>
-          <div className="hudStats"><span>🟡 × {String(coins).padStart(2,"0")}</span><span>{big ? "🍄 大力状态" : "♡ 小小状态"}</span></div>
+          <div><span className="hudLabel">关卡</span><strong>1 — 皇城郊野</strong></div>
+          <div className="hudStats"><span>🟡 × {String(coins).padStart(2,"0")}</span><span>{big ? "🍡 大力状态" : "♡ 轻功状态"}</span></div>
         </div>
         <div className="canvasWrap">
           <canvas ref={canvasRef} width="960" height="540" aria-label="横版平台游戏画面" />
           {status !== "playing" && (
             <div className="gameOverlay">
-              {status === "ready" && <><span className="overlayMini">你的冒险正在等待</span><h2>抵达右边的城堡</h2><p>← → 移动　·　空格跳跃　·　R 重来</p></>}
-              {status === "won" && <><span className="trophy">♛</span><h2>城堡到了！</h2><p>你收集了 {coins} 枚金币，完成了青绿原野。</p></>}
+              {status === "ready" && <><span className="overlayMini">侠客的旅程正在等待</span><h2>抵达右边的皇宫</h2><p>← → 移动　·　空格跳跃　·　R 重来</p></>}
+              {status === "won" && <><span className="trophy">♛</span><h2>皇宫到了！</h2><p>你收集了 {coins} 枚金币，完成了皇城郊野。</p></>}
               {status === "lost" && <><span className="trophy">☁</span><h2>差一点！</h2><p>冒险家不会被一个小坑打败。</p></>}
               <button onClick={() => restartRef.current()}>{status === "ready" ? "开始冒险 →" : "再玩一次 ↻"}</button>
             </div>
@@ -259,9 +243,9 @@ export default function Home() {
       </section>
 
       <section className="tips">
-        <article><span>01</span><div><h3>装备你的图案</h3><p>上传自拍、宠物或手绘图，让它出现在冒险家脸上。</p></div></article>
-        <article><span>02</span><div><h3>蘑菇会让你变大</h3><p>碰到红色蘑菇，体型和抗打能力都会提升。</p></div></article>
-        <article><span>03</span><div><h3>目标：月光城堡</h3><p>一路向右，安全穿过原野就是胜利。</p></div></article>
+        <article><span>01</span><div><h3>固定少年侠客</h3><p>身穿玄色金纹劲装，轻功跳跃，踏上唯一的皇城之路。</p></div></article>
+        <article><span>02</span><div><h3>糖葫芦大力状态</h3><p>碰到闪亮糖葫芦，体型和抗打能力都会提升。</p></div></article>
+        <article><span>03</span><div><h3>目标：金瓦皇宫</h3><p>一路向右，安全穿过皇城郊野就是胜利。</p></div></article>
       </section>
       <footer><span>PIXEL QUEST</span><span>原创像素冒险 · 为你而造</span></footer>
     </main>
