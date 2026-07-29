@@ -28,6 +28,8 @@ export default function Home() {
     let collected = new Set<number>();
     let mushroomTaken = false;
     let startTime = performance.now();
+    const background = new Image();
+    background.src = "/game-background.png";
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
@@ -60,11 +62,6 @@ export default function Home() {
     const overlap = (a: {x:number;y:number;w:number;h:number}, b: {x:number;y:number;w:number;h:number}) =>
       a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
-    const drawPixelCloud = (x: number, y: number, s = 1) => {
-      ctx.fillStyle = "#fff4cf";
-      ctx.fillRect(x, y + 18*s, 100*s, 26*s); ctx.fillRect(x + 18*s, y, 45*s, 35*s);
-      ctx.fillRect(x + 58*s, y + 9*s, 28*s, 28*s);
-    };
     const drawBlock = (x: number, y: number, w: number, h: number) => {
       ctx.fillStyle = "#6f3b2b"; ctx.fillRect(x, y, w, h);
       ctx.fillStyle = "#a95b37"; ctx.fillRect(x, y, w, 12);
@@ -72,24 +69,6 @@ export default function Home() {
       ctx.fillStyle = "#91df64"; ctx.fillRect(x, y - 9, w, 5);
       ctx.strokeStyle = "#4a2730"; ctx.lineWidth = 3;
       for (let bx = x; bx < x + w; bx += 42) ctx.strokeRect(bx, y + 12, 42, 28);
-    };
-    const drawPalace = (x: number) => {
-      ctx.fillStyle = "#b7332b"; ctx.fillRect(x + 35, 290, 270, 165);
-      ctx.fillStyle = "#f1c45e"; ctx.fillRect(x + 55, 315, 230, 16);
-      ctx.fillStyle = "#1f6072"; ctx.fillRect(x + 65, 335, 210, 16);
-      ctx.fillStyle = "#ef9f2f";
-      ctx.beginPath(); ctx.moveTo(x, 290); ctx.lineTo(x + 45, 250); ctx.lineTo(x + 295, 250); ctx.lineTo(x + 340, 290); ctx.fill();
-      ctx.fillStyle = "#ffd65c"; ctx.fillRect(x + 28, 280, 284, 13);
-      ctx.fillStyle = "#ef9f2f";
-      ctx.beginPath(); ctx.moveTo(x + 38, 250); ctx.lineTo(x + 78, 205); ctx.lineTo(x + 262, 205); ctx.lineTo(x + 302, 250); ctx.fill();
-      ctx.fillStyle = "#ffd65c"; ctx.fillRect(x + 67, 240, 206, 12);
-      ctx.fillStyle = "#6f201f"; ctx.fillRect(x + 135, 365, 70, 90);
-      ctx.fillStyle = "#e9be75";
-      for (let i = 0; i < 6; i++) ctx.fillRect(x + 55 + i*47, 315, 12, 140);
-      ctx.fillStyle = "#203e54"; ctx.fillRect(x + 120, 262, 100, 34);
-      ctx.fillStyle = "#ffd65c"; ctx.font = "900 22px serif"; ctx.textAlign = "center"; ctx.fillText("皇 宫", x + 170, 287);
-      ctx.fillStyle = "#ef9f2f";
-      ctx.fillRect(x + 15, 275, 28, 10); ctx.fillRect(x + 297, 275, 28, 10);
     };
     const drawPlayer = () => {
       const x = Math.round(player.x - camera), y = Math.round(player.y);
@@ -149,13 +128,11 @@ export default function Home() {
     const draw = () => {
       ctx.imageSmoothingEnabled = false;
       ctx.fillStyle = "#55c9c5"; ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = "#8edbd0";
-      for (let i = 0; i < 7; i++) {
-        const hx = ((i * 260 - camera * 0.18) % 1900) - 120;
-        ctx.beginPath(); ctx.arc(hx, 455, 170, Math.PI, 0); ctx.fill();
+      if (background.complete) {
+        const sway = Math.min(90, camera * 0.035);
+        ctx.drawImage(background, sway, 0, background.width - sway, background.height, 0, 0, W, H);
       }
-      drawPixelCloud(130 - camera * .12, 70, 1.1); drawPixelCloud(570 - camera * .09, 120, .8);
-      drawPixelCloud(1030 - camera * .12, 55, 1.25); drawPixelCloud(1600 - camera * .1, 100, .9);
+      ctx.fillStyle = "rgba(14,46,65,.08)"; ctx.fillRect(0, 0, W, H);
       ctx.save(); ctx.translate(-camera, 0);
       platforms.forEach((p) => drawBlock(p.x, p.y, p.w, p.h));
       coinPositions.forEach(([x, y], i) => {
@@ -179,7 +156,6 @@ export default function Home() {
         ctx.fillStyle = "#fff2c5"; ctx.fillRect(e.x + 9, e.y + 12, 6, 7); ctx.fillRect(e.x + 25, e.y + 12, 6, 7);
         ctx.fillStyle = "#2b2448"; ctx.fillRect(e.x + 11, e.y + 14, 3, 4); ctx.fillRect(e.x + 27, e.y + 14, 3, 4);
       });
-      drawPalace(3045);
       ctx.restore();
       drawPlayer();
       if (gameStatus === "ready") {
