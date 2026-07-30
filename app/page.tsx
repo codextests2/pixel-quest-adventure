@@ -24,7 +24,8 @@ export default function Home() {
     const worldW = 3400;
     const groundY = 455;
     let animation = 0;
-    let gameStatus: Status = "ready";
+    let gameStatus: Status | "meeting" = "ready";
+    let meetingStarted = 0;
     let camera = 0;
     let collected = new Set<number>();
     let mushroomTaken = false;
@@ -48,6 +49,7 @@ export default function Home() {
       { x: 2110, y: 285, w: 200, h: 28 },
     ];
     const ladder = { x: 2187, y: 285, w: 46, h: groundY - 285 };
+    const maid = { x: 3070, h: 68 };
     const coinPositions = [
       [260, 375], [340, 375], [450, 285], [530, 285], [900, 375], [1030, 255],
       [1110, 255], [1515, 375], [1600, 275], [1980, 375], [2170, 225], [2260, 225],
@@ -63,7 +65,7 @@ export default function Home() {
     const reset = () => {
       player.x = 100; player.y = groundY - 46; player.vx = 0; player.vy = 0;
       player.w = 34; player.h = 46; player.big = false; collected = new Set();
-      mushroomTaken = false; camera = 0; gameStatus = "playing"; startTime = performance.now();
+      mushroomTaken = false; camera = 0; meetingStarted = 0; gameStatus = "playing"; startTime = performance.now();
       enemies.forEach((e) => e.alive = true);
       setCoins(0); setBig(false); setStatus("playing");
     };
@@ -108,9 +110,30 @@ export default function Home() {
         ctx.drawImage(hero, drawX, drawY, visualW, visualH);
       }
       ctx.restore();
+      if (gameStatus === "meeting") {
+        const handX = Math.round(maid.x - camera + 5);
+        const handY = groundY - 44;
+        ctx.fillStyle = "#f2b184";
+        ctx.fillRect(handX - 7, handY, 16, 8);
+        ctx.fillStyle = "#ffd24a";
+        ctx.fillRect(handX - 2, handY - 18, 5, 5);
+        ctx.fillRect(handX - 7, handY - 13, 5, 5);
+        ctx.fillRect(handX + 3, handY - 13, 5, 5);
+      }
     };
 
     const update = () => {
+      if (gameStatus === "meeting") {
+        player.vx = 0;
+        player.vy = 0;
+        camera += ((player.x - W * 0.35) - camera) * 0.09;
+        camera = Math.max(0, Math.min(worldW - W, camera));
+        if (performance.now() - meetingStarted > 1200) {
+          gameStatus = "won";
+          setStatus("won");
+        }
+        return;
+      }
       if (gameStatus !== "playing") return;
       const c = controls.current;
       player.vx += (c.left ? -0.7 : 0) + (c.right ? 0.7 : 0);
@@ -151,7 +174,13 @@ export default function Home() {
         }
       });
       if (player.y > H + 100) { gameStatus = "lost"; setStatus("lost"); }
-      if (player.x > 3180) { gameStatus = "won"; setStatus("won"); }
+      if (player.x + player.w >= maid.x - 5) {
+        player.x = maid.x - 29;
+        player.vx = 0;
+        player.vy = 0;
+        gameStatus = "meeting";
+        meetingStarted = performance.now();
+      }
       camera += ((player.x - W * 0.35) - camera) * 0.09;
       camera = Math.max(0, Math.min(worldW - W, camera));
     };
@@ -198,9 +227,8 @@ export default function Home() {
         ctx.restore();
       });
       if (palaceMaid.complete && palaceMaid.width > 0) {
-        const maidH = 126;
-        const maidW = Math.round(maidH * palaceMaid.width / palaceMaid.height);
-        ctx.drawImage(palaceMaid, 3070, groundY - 9 - maidH, maidW, maidH);
+        const maidW = Math.round(maid.h * palaceMaid.width / palaceMaid.height);
+        ctx.drawImage(palaceMaid, maid.x, groundY - 9 - maid.h, maidW, maid.h);
       }
       ctx.restore();
       drawPlayer();
@@ -245,7 +273,7 @@ export default function Home() {
           {status !== "playing" && (
             <div className="gameOverlay">
               {status === "ready" && <><span className="overlayMini">侠客的旅程正在等待</span><h2>抵达右边的皇宫</h2><p>← → 移动　·　空格跳跃　·　R 重来</p></>}
-              {status === "won" && <><span className="trophy">♛</span><h2>皇宫到了！</h2><p>你收集了 {coins} 份拉面与水饺，完成了皇城郊野。</p></>}
+              {status === "won" && <><span className="trophy">♛</span><h2>皇宫到了！</h2><p>宫女牵起你的手，你带着 {coins} 份美食完成了皇城郊野。</p></>}
               {status === "lost" && <><span className="trophy">☁</span><h2>差一点！</h2><p>冒险家不会被一个小坑打败。</p></>}
               <button onClick={() => restartRef.current()}>{status === "ready" ? "开始冒险 →" : "再玩一次 ↻"}</button>
             </div>
