@@ -18,7 +18,7 @@ button,label { -webkit-tap-highlight-color:transparent; }
 .hudStats { display:flex; gap:22px; font-weight:800; }
 .canvasWrap { position:relative; background:#45c1bb; overflow:hidden; }
 canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
-.gameOverlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:rgba(43,36,72,.72); color:#fff8df; backdrop-filter:blur(2px); padding:20px; }
+.gameOverlay { position:absolute; z-index:5; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:rgba(43,36,72,.72); color:#fff8df; backdrop-filter:blur(2px); padding:20px; }
 .gameOverlay h2 { margin:8px 0; font-size:clamp(30px,5vw,56px); letter-spacing:-2px; }
 .gameOverlay p { margin:4px 0 24px; font-family:monospace; }
 .overlayMini { color:var(--yellow); font:bold 12px monospace; letter-spacing:2px; text-transform:uppercase; }
@@ -39,20 +39,23 @@ footer { display:flex; justify-content:space-between; padding:24px max(24px,calc
   .hudLabel { font-size:8px; }
   .hud strong { font-size:11px; }
   .hudStats { gap:3px; flex-direction:column; font-size:9px; line-height:1.15; text-align:right; }
-  .canvasWrap canvas { width:100%; max-height:48svh; object-fit:contain; }
+  .canvasWrap canvas { width:100%; height:auto; max-height:none; object-fit:cover; object-position:center bottom; }
   .gameOverlay { padding:10px; }
   .gameOverlay h2 { margin:4px 0; font-size:24px; letter-spacing:-1px; }
   .gameOverlay p { margin:2px 0 12px; font-size:10px; }
   .overlayMini { font-size:9px; letter-spacing:1px; }
   .gameOverlay button { padding:9px 15px; border-width:2px; box-shadow:3px 3px 0 #fff8df; font-size:13px; }
-  .mobileControls { display:flex; padding:7px; gap:7px; border-top-width:2px; }
-  .mobileControls button { min-height:44px; border-width:2px; box-shadow:2px 2px 0 var(--ink); font-size:20px; }
+  .mobileControls { position:absolute; z-index:4; left:9px; right:9px; bottom:9px; display:flex; padding:0; gap:7px; border:0; background:transparent; pointer-events:none; }
+  .mobileControls button { flex:0 0 54px; min-height:42px; border-width:2px; box-shadow:2px 2px 0 var(--ink); font-size:20px; opacity:.86; pointer-events:auto; }
+  .mobileControls button:nth-child(2) { margin-right:auto; }
+  .mobileControls .jumpButton { flex:0 0 70px; }
   footer { display:none; }
 }
 @media(max-width:720px) and (orientation:landscape) {
   .topbar { display:none; }
-  .gameShell { margin-top:2px; }
+  .gameShell { width:100%; margin:0; border-left:0; border-right:0; }
   .hud { height:38px; min-height:38px; }
-  .canvasWrap canvas { max-height:66svh; }
-  .mobileControls button { min-height:36px; }
+  .canvasWrap canvas { width:100%; height:calc(100svh - 42px); max-height:none; object-fit:cover; object-position:center bottom; }
+  .mobileControls { bottom:8px; }
+  .mobileControls button { min-height:38px; }
 }
