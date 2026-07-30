@@ -49,7 +49,7 @@ export default function Home() {
       { x: 2110, y: 285, w: 200, h: 28 },
     ];
     const ladder = { x: 2187, y: 285, w: 46, h: groundY - 285 };
-    const maid = { x: 3070, h: 68 };
+    const maid = { x: 3070, w: 48, h: 72 };
     const coinPositions = [
       [260, 375], [340, 375], [450, 285], [530, 285], [900, 375], [1030, 255],
       [1110, 255], [1515, 375], [1600, 275], [1980, 375], [2170, 225], [2260, 225],
@@ -227,8 +227,11 @@ export default function Home() {
         ctx.restore();
       });
       if (palaceMaid.complete && palaceMaid.width > 0) {
-        const maidW = Math.round(maid.h * palaceMaid.width / palaceMaid.height);
-        ctx.drawImage(palaceMaid, maid.x, groundY - 9 - maid.h, maidW, maid.h);
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(palaceMaid, maid.x, groundY - 9 - maid.h, maid.w, maid.h);
+        ctx.restore();
       }
       ctx.restore();
       drawPlayer();
