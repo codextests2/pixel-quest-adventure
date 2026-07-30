@@ -205,11 +205,17 @@ export default function Home() {
         ctx.drawImage(foods, sourceX, 0, sourceW, foods.height, x - 24, y - 24 + bob, 48, 48);
       });
       if (!mushroomTaken) {
-        ctx.strokeStyle = "#7a3e23"; ctx.lineWidth = 5;
-        ctx.beginPath(); ctx.moveTo(1299, 372); ctx.lineTo(1299, 423); ctx.stroke();
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#4e2a1e"; ctx.lineWidth = 9;
+        ctx.beginPath(); ctx.moveTo(1297, 382); ctx.lineTo(1309, 445); ctx.stroke();
+        ctx.strokeStyle = "#d39a52"; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(1297, 382); ctx.lineTo(1309, 445); ctx.stroke();
+        ctx.lineCap = "butt";
         for (let i = 0; i < 4; i++) {
-          ctx.fillStyle = "#df3429"; ctx.beginPath(); ctx.arc(1299, 382 + i * 10, 9, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = "#ff7d42"; ctx.fillRect(1295, 377 + i * 10, 4, 4);
+          const berryX = 1297 + i * 2;
+          ctx.fillStyle = "#8d231d"; ctx.beginPath(); ctx.arc(berryX, 382 + i * 10, 10, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#df3429"; ctx.beginPath(); ctx.arc(berryX, 381 + i * 10, 8, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#ff9b58"; ctx.fillRect(berryX - 4, 376 + i * 10, 4, 4);
         }
       }
       enemies.forEach((e) => {
