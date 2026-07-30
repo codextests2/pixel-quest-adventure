@@ -287,7 +287,7 @@ export default function Home() {
               <button onClick={() => restartRef.current()}>{status === "ready" ? "开始冒险 →" : "再玩一次 ↻"}</button>
             </div>
           )}
-          <div className="mobileControls">
+          <div className="mobileControls" onContextMenu={(event) => event.preventDefault()}>
             <button aria-label="向左" onPointerDown={press("left", true)} onPointerUp={press("left", false)} onPointerLeave={press("left", false)}>←</button>
             <button aria-label="向右" onPointerDown={press("right", true)} onPointerUp={press("right", false)} onPointerLeave={press("right", false)}>→</button>
             <button className="jumpButton" aria-label="跳跃" onPointerDown={press("jump", true)} onPointerUp={press("jump", false)} onPointerLeave={press("jump", false)}>跳</button>

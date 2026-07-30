@@ -16,7 +16,7 @@ button,label { -webkit-tap-highlight-color:transparent; }
 .hudLabel { display:block; font-size:10px; opacity:.65; text-transform:uppercase; letter-spacing:1px; }
 .hud strong { font-size:15px; }
 .hudStats { display:flex; gap:22px; font-weight:800; }
-.canvasWrap { position:relative; background:#45c1bb; overflow:hidden; }
+.canvasWrap { position:relative; background:#45c1bb; overflow:hidden; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
 canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
 .gameOverlay { position:absolute; z-index:5; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:rgba(43,36,72,.72); color:#fff8df; backdrop-filter:blur(2px); padding:20px; }
 .gameOverlay h2 { margin:8px 0; font-size:clamp(30px,5vw,56px); letter-spacing:-2px; }
@@ -25,7 +25,7 @@ canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
 .gameOverlay button { cursor:pointer; padding:14px 24px; background:var(--red); color:white; border:3px solid #fff8df; box-shadow:5px 5px 0 #fff8df; font-size:17px; font-weight:900; }
 .trophy { font-size:50px; color:var(--yellow); }
 .mobileControls { display:none; padding:12px; gap:10px; border-top:4px solid var(--ink); }
-.mobileControls button { flex:1; min-height:54px; color:var(--ink); background:#fff0b7; border:3px solid var(--ink); font-size:24px; font-weight:900; box-shadow:3px 3px 0 var(--ink); touch-action:none; }
+.mobileControls button { flex:1; min-height:54px; color:var(--ink); background:#fff0b7; border:3px solid var(--ink); font-size:24px; font-weight:900; box-shadow:3px 3px 0 var(--ink); touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
 .mobileControls .jumpButton { background:var(--red); color:white; flex:1.4; }
 footer { display:flex; justify-content:space-between; padding:24px max(24px,calc((100vw - 1200px)/2)); background:var(--ink); color:#fff8df; font:bold 12px monospace; letter-spacing:1px; }
 @media(max-width:720px) {
