@@ -37,6 +37,8 @@ export default function Home() {
     foods.src = `${assetBase}/foods.png`;
     const guard = new Image();
     guard.src = `${assetBase}/guard.png`;
+    const palaceMaid = new Image();
+    palaceMaid.src = `${assetBase}/palace-maid.png`;
     const player = { x: 100, y: groundY - 46, w: 34, h: 46, vx: 0, vy: 0, grounded: false, big: false };
     const platforms = [
       { x: 0, y: groundY, w: 720, h: 100 }, { x: 800, y: groundY, w: 560, h: 100 },
@@ -45,6 +47,7 @@ export default function Home() {
       { x: 980, y: 315, w: 170, h: 28 }, { x: 1550, y: 330, w: 150, h: 28 },
       { x: 2110, y: 285, w: 200, h: 28 },
     ];
+    const ladder = { x: 2187, y: 285, w: 46, h: groundY - 285 };
     const coinPositions = [
       [260, 375], [340, 375], [450, 285], [530, 285], [900, 375], [1030, 255],
       [1110, 255], [1515, 375], [1600, 275], [1980, 375], [2170, 225], [2260, 225],
@@ -74,10 +77,20 @@ export default function Home() {
       ctx.fillStyle = "#a95b37"; ctx.fillRect(x, y, w, 12);
       ctx.fillStyle = "#55b953"; ctx.fillRect(x, y - 9, w, 11);
       ctx.fillStyle = "#91df64"; ctx.fillRect(x, y - 9, w, 5);
-      ctx.fillStyle = "#8b4a31";
-      for (let bx = x + 18; bx < x + w; bx += 64) {
-        ctx.fillRect(bx, y + 24, 18, 5);
-        ctx.fillRect(bx + 27, y + 55, 11, 5);
+      if (y < groundY) {
+        ctx.fillStyle = "#8b4a31";
+        for (let bx = x + 18; bx < x + w - 8; bx += 56) {
+          ctx.fillRect(bx, y + 17, 17, 4);
+        }
+      }
+    };
+    const drawLadder = () => {
+      ctx.fillStyle = "#663724";
+      ctx.fillRect(ladder.x, ladder.y, 7, ladder.h);
+      ctx.fillRect(ladder.x + ladder.w - 7, ladder.y, 7, ladder.h);
+      ctx.fillStyle = "#d99a42";
+      for (let y = ladder.y + 12; y < ladder.y + ladder.h; y += 22) {
+        ctx.fillRect(ladder.x + 4, y, ladder.w - 8, 7);
       }
     };
     const drawPlayer = () => {
@@ -102,8 +115,14 @@ export default function Home() {
       const c = controls.current;
       player.vx += (c.left ? -0.7 : 0) + (c.right ? 0.7 : 0);
       player.vx *= 0.82; player.vx = Math.max(-6, Math.min(6, player.vx));
-      if (c.jump && player.grounded) { player.vy = -13.5; player.grounded = false; }
-      player.vy += 0.68; player.vy = Math.min(player.vy, 15);
+      const onLadder = overlap(player, { x: ladder.x - 8, y: ladder.y, w: ladder.w + 16, h: ladder.h + 6 });
+      if (onLadder && c.jump) {
+        player.vy = -3.8;
+        player.grounded = false;
+      } else {
+        if (c.jump && player.grounded) { player.vy = -13.5; player.grounded = false; }
+        player.vy += 0.68; player.vy = Math.min(player.vy, 15);
+      }
       player.x += player.vx; player.x = Math.max(0, Math.min(worldW - player.w, player.x));
       const oldBottom = player.y + player.h;
       player.y += player.vy; player.grounded = false;
@@ -147,6 +166,7 @@ export default function Home() {
       ctx.fillStyle = "rgba(14,46,65,.08)"; ctx.fillRect(0, 0, W, H);
       ctx.save(); ctx.translate(-camera, 0);
       platforms.forEach((p) => drawBlock(p.x, p.y, p.w, p.h));
+      drawLadder();
       coinPositions.forEach(([x, y], i) => {
         if (collected.has(i)) return;
         if (!foods.complete || foods.width === 0) return;
@@ -177,6 +197,11 @@ export default function Home() {
         }
         ctx.restore();
       });
+      if (palaceMaid.complete && palaceMaid.width > 0) {
+        const maidH = 126;
+        const maidW = Math.round(maidH * palaceMaid.width / palaceMaid.height);
+        ctx.drawImage(palaceMaid, 3070, groundY - 9 - maidH, maidW, maidH);
+      }
       ctx.restore();
       drawPlayer();
       if (gameStatus === "ready") {
